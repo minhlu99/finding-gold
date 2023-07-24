@@ -11,10 +11,22 @@
         <div class="input-group">
             <div>
                 <label for="rows" class="inp">
-                    <input id="rows" type="number" min="1" max="18" placeholder="&nbsp;">
-                    <span class="label">Nhập số hàng và cột (n x n):</span>
+                    <span class="label">Choose Input size (n x n):</span>
                     <span class="focus-bg"></span>
                 </label>
+                <br>
+                <select id="rows" type="number" class="select-input" onclick="changePlayBtn()">
+                    <option value="6">6 x 6</option>
+                    <option value="8">8 x 8</option>
+                    <option value="10">10 x 10</option>
+                    <option value="12">12 x 12</option>
+                    <option value="14">14 x 14</option>
+                    <option value="15">15 x 15</option>
+                    <option value="16">16 x 16</option>
+                    <option value="17">17 x 17</option>
+                    <option value="18">18 x 18</option>
+                    <option value="20">20 x 20</option>
+                </select>
             </div>
             <div>
                 <!-- <label for="cols" class="inp">
@@ -25,8 +37,25 @@
             </div> -->
         </div>
         <div>
-            <button onclick="generateMatrix()" class="glow-on-hover">Tạo ma Trận</button>
+            <button id="play-btn" onclick="generateMatrix()" class="glow-on-hover">
+                Play!</button>
         </div>
+        <div class="tutorial-container">
+            <h3 class="tutorial-header">Tutorial</h3>
+            <div class="left-click">
+                <img src="./img/pot-of-gold.svg" class="left-click-image gold-image">
+                <img src="./img/boom-3307008.svg" class="left-click-image">
+                <p>Left Mouse Click</p>
+            </div>
+            <div class="right-click">
+                <img src="./img/flag.svg" class="right-click-image">
+                <p>Right Mouse Click</p>
+            </div>
+            <div></div>
+            <div></div>
+            <p></p>
+        </div>
+    </div>
     </div>
     <br>
     <div class="matrixTable-container">
@@ -35,7 +64,7 @@
         <!-- pop up chiến thắng -->
         <div class="overlay" id="popup1">
             <div class="popup">
-              <h2>Chúc mừng bạn đã chiến thắng!</h2>
+              <h2>Congratulations, You Win!</h2>
               <button onclick="closeModal1()" class="glow-on-hover">Close</button>
             </div>
           </div>          
@@ -44,14 +73,28 @@
         <!-- pop up nhập cột và hàng không hợp lệ -->
     <div class="overlay" id="popup2">
         <div class="popup">
-          <h2>Vui lòng nhập số hàng và cột hợp lệ!</h2>
+          <h2>Invalid Input!</h2>
           <button onclick="closeModal2()" class="glow-on-hover">Close</button>
         </div>
       </div>          
 </div>
 
+        <!-- pop up thua cuộc -->
+        <div class="overlay" id="popup3">
+            <div class="popup">
+              <h2>You Lose!!</h2>
+              <button onclick="closeModal3()" class="glow-on-hover">Close</button>
+            </div>
+          </div>          
+    </div>
+
 
     <script>
+
+        function changePlayBtn() {
+                    const button = document.getElementById('play-btn');
+                    button.textContent = "Play!" ;
+        }
 
         function generateMatrix() {
             const rowsInput = document.getElementById("rows");
@@ -62,11 +105,13 @@
 
             const matrixTable = document.getElementById("matrixTable");
             matrixTable.innerHTML = "";
-            const matrixHeader = document.createElement('h1');
-            matrixHeader.textContent = `${rows} x ${cols}`
-            matrixTable.appendChild(matrixHeader)
 
-            if (isNaN(rows) || rows < 1 || rows > 18) {
+            const isLargeSize = rows > 10;
+            const isLargeSize1 = rows > 15;
+
+
+
+            if (isNaN(rows) || rows < 6 || rows > 20) {
                 const modal = document.getElementById('popup2');
                 modal.style.display = 'block';
                 return;
@@ -138,6 +183,9 @@
                     let countCell = document.createElement('div');
                     countCell.textContent = colCounts[k];
                     countCell.className = 'counter';
+                    if (isLargeSize) {
+                        countCell.classList.add('modify-counter-font-size')
+                    }
                     headerCell.appendChild(countCell);
                 }
                 headerRow.appendChild(headerCell);
@@ -157,6 +205,9 @@
                     let countDiv = document.createElement('div');
                     countDiv.textContent = rowCounts[k];
                     countDiv.className = 'counter';
+                    if (isLargeSize) {
+                        countDiv.classList.add('modify-counter-font-size')
+                    }
                     counterWrapper.appendChild(countDiv);
                 }
                 countCell.appendChild(counterWrapper);
@@ -171,6 +222,7 @@
                             } else if (matrix[i][j] === 'white') {
                                 matrix[i][j] = 'turn-boom';
                                 cell.className = 'turn-boom';
+                                checkLose()
                             } 
                         }
                     const isFlag = (event) => {
@@ -186,6 +238,19 @@
                 }
                     let cell = document.createElement("td");
                     cell.className = matrix[i][j];
+                    cell.classList.add('cell-size')
+
+                    // tạo responsive cho cell và font khi kích thước bảng quá lớn
+                    if (isLargeSize) {
+                        cell.classList.remove('cell-size')
+                        cell.classList.add('modify-cell-size')
+                    }
+                    if (isLargeSize1) {
+                        cell.classList.remove('cell-size')
+                        cell.classList.add('modify-cell-size1')
+                    }
+
+
                     cell.onclick = isBoom;
                     cell.oncontextmenu = isFlag;
                     row.appendChild(cell);
@@ -194,6 +259,10 @@
             }
             
             matrixTable.appendChild(table);
+
+                    // đổi nội dung button khi click vào
+                    const button = document.getElementById('play-btn');
+                    button.textContent = "Reset?" ;
         }
 
         const matrixTable = document.getElementById('matrixTable');
@@ -206,6 +275,14 @@
             }
         }
 
+        function checkLose() {
+            let cells = document.querySelectorAll('.turn-boom');
+            if (cells.length === 1) {
+                const modal = document.getElementById('popup3');
+                modal.style.display = 'block';
+            }
+        }
+
         function closeModal1() {
             const modal = document.getElementById('popup1');
             modal.style.display = 'none';
@@ -213,6 +290,12 @@
 
         function closeModal2() {
             const modal = document.getElementById('popup2');
+            modal.style.display = 'none';
+        }
+
+
+        function closeModal3() {
+            const modal = document.getElementById('popup3');
             modal.style.display = 'none';
         }
 
