@@ -239,7 +239,7 @@ h1 {
 }
 
 #matrixTable td.flag {
-    background-image: url('/img/flag.svg');
+    background-image: url('./img/flag.svg');
     background-repeat: no-repeat;
     width: 70px;
     height: 70px;
