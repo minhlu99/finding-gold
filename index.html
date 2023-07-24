@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Gold</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="input-container">
+        <div class="input-group">
+            <div>
+                <label for="rows" class="inp">
+                    <input id="rows" type="number" min="1" max="18" placeholder="&nbsp;">
+                    <span class="label">Nhập số hàng và cột (n x n):</span>
+                    <span class="focus-bg"></span>
+                </label>
+            </div>
+            <div>
+                <!-- <label for="cols" class="inp">
+                    <input id="cols" type="number" min="1" max="18" placeholder="&nbsp;">
+                    <span class="label">Nhập số cột:</span>
+                    <span class="focus-bg"></span>
+                </label>
+            </div> -->
+        </div>
+        <div>
+            <button onclick="generateMatrix()" class="glow-on-hover">Tạo ma Trận</button>
+        </div>
+    </div>
+    <br>
+    <div class="matrixTable-container">
+        <table id="matrixTable"></table>
+
+        <!-- pop up chiến thắng -->
+        <div class="overlay" id="popup1">
+            <div class="popup">
+              <h2>Chúc mừng bạn đã chiến thắng!</h2>
+              <button onclick="closeModal1()" class="glow-on-hover">Close</button>
+            </div>
+          </div>          
+    </div>
+
+        <!-- pop up nhập cột và hàng không hợp lệ -->
+    <div class="overlay" id="popup2">
+        <div class="popup">
+          <h2>Vui lòng nhập số hàng và cột hợp lệ!</h2>
+          <button onclick="closeModal2()" class="glow-on-hover">Close</button>
+        </div>
+      </div>          
+</div>
+
+
+    <script>
+
+        function generateMatrix() {
+            const rowsInput = document.getElementById("rows");
+            const colsInput = document.getElementById("cols");
+
+            const rows = parseInt(rowsInput.value);
+            const cols = parseInt(rowsInput.value);
+
+            const matrixTable = document.getElementById("matrixTable");
+            matrixTable.innerHTML = "";
+            const matrixHeader = document.createElement('h1');
+            matrixHeader.textContent = `${rows} x ${cols}`
+            matrixTable.appendChild(matrixHeader)
+
+            if (isNaN(rows) || rows < 1 || rows > 18) {
+                const modal = document.getElementById('popup2');
+                modal.style.display = 'block';
+                return;
+            }
+
+            const matrix = []
+
+            for (let i = 0; i < rows; i++) {
+                const row = []
+
+                for (let j = 0; j < cols; j++) {
+                    let color = (Math.random() < 0.5) ? 'white' : 'red';
+                    row.push(color)
+
+                }
+                matrix.push(row)
+            }
+
+            const rowCounters = []
+            for (let i = 0; i < rows; i++) {
+                const row = []
+                let rowCounter = 0
+                rowCounters.push([])
+                for (let j = 0; j < cols; j++) {
+                    if (matrix[i][j] === 'red') {
+                        rowCounter++
+                    }
+                    else if (rowCounter > 0) {
+                        rowCounters[i].push(rowCounter);
+                        rowCounter = 0; // Reset đếm hàng
+                    }
+                }
+                if (rowCounter > 0) {
+                    rowCounters[i].push(rowCounter); // Lưu giá trị đếm hàng cuối cùng
+                }
+            }
+
+            const colCounters = []
+            for (let j = 0; j < cols; j++) {
+                const col = []
+                let colCounter = 0
+                for (let i = 0; i < rows; i++) {
+                    if (matrix[i][j] === 'red') {
+                        colCounter++
+                    }
+                    else if (colCounter > 0) {
+                        col.push(colCounter);
+                        colCounter = 0;
+                    }
+                }
+                if (colCounter > 0) {
+                    col.push(colCounter)
+                }
+                colCounters.push(col)
+            }
+
+            let table = document.createElement('table')
+            table.className = "matrixTable-child"
+
+            // Header hàng
+            let headerRow = document.createElement('tr')
+
+            headerRow.appendChild(document.createElement('td')) // Ô trống đầu tiên
+            for (let j = 0; j < cols; j++) {
+                let headerCell = document.createElement('td');
+                headerCell.className = "counterWrapper"
+                let colCounts = colCounters[j];
+                for (let k = 0; k < colCounts.length; k++) {
+                    let countCell = document.createElement('div');
+                    countCell.textContent = colCounts[k];
+                    countCell.className = 'counter';
+                    headerCell.appendChild(countCell);
+                }
+                headerRow.appendChild(headerCell);
+            }
+            table.appendChild(headerRow);
+
+            // Các hàng còn lại
+            for (let i = 0; i < rows; i++) {
+                let row = document.createElement("tr");
+                
+                // Ô đếm hàng
+                let countCell = document.createElement("td");
+                let rowCounts = rowCounters[i];
+                let counterWrapper = document.createElement('div');
+                counterWrapper.className = 'counters';
+                for (let k = 0; k < rowCounts.length; k++) {
+                    let countDiv = document.createElement('div');
+                    countDiv.textContent = rowCounts[k];
+                    countDiv.className = 'counter';
+                    counterWrapper.appendChild(countDiv);
+                }
+                countCell.appendChild(counterWrapper);
+                row.appendChild(countCell);
+
+                // Các ô ma trận
+                for (let j = 0; j < cols; j++) {
+                    const isBoom = (event) => {
+                            if (matrix[i][j] === 'red') {
+                                cell.className = 'turn-gold'
+                                checkWin();
+                            } else if (matrix[i][j] === 'white') {
+                                matrix[i][j] = 'turn-boom';
+                                cell.className = 'turn-boom';
+                            } 
+                        }
+                    const isFlag = (event) => {
+                        if (event.type === 'contextmenu') {
+                            event.preventDefault();
+                            const cell = event.target
+                            if (!cell.classList.contains('flag')) {
+                                cell.classList.add('flag');
+                            } else {
+                                cell.classList.remove('flag');
+                            }    
+                    }
+                }
+                    let cell = document.createElement("td");
+                    cell.className = matrix[i][j];
+                    cell.onclick = isBoom;
+                    cell.oncontextmenu = isFlag;
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+            
+            matrixTable.appendChild(table);
+        }
+
+        const matrixTable = document.getElementById('matrixTable');
+
+        function checkWin() {
+            let cells = document.querySelectorAll('.red');
+            if (cells.length === 0) {
+                const modal = document.getElementById('popup1');
+                modal.style.display = 'block';
+            }
+        }
+
+        function closeModal1() {
+            const modal = document.getElementById('popup1');
+            modal.style.display = 'none';
+        }
+
+        function closeModal2() {
+            const modal = document.getElementById('popup2');
+            modal.style.display = 'none';
+        }
+
+    </script>
+
+</body>
+</html>
