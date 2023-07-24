@@ -73,7 +73,7 @@ h1 {
 }
 
 .modify-counter-font-size {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 
@@ -88,7 +88,6 @@ h1 {
 .input-container {
     margin-left: 50px;
     margin-right: 50px;
-    height: 100vh;
 }
 
 .matrixTable-child {
@@ -102,6 +101,15 @@ h1 {
 }
 .input-group {
     margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* .inp {
@@ -164,15 +172,17 @@ h1 {
 
 .inp {
   font-size: 19px;
-  font-family:'Courier New', Courier, monospace
+  font-family:'Courier New', Courier, monospace;
+  display: flex;
+
 }
 
 .select-input {
-  margin: 15px 0;
+  margin: 10px 0;
   font-size: 24px;
-  width: 300px;
+  width: 200px;
   text-align: center;
-  height: 50px;
+  height: 40px;
   border-radius: 4px;
   background-color: #f1f1f1;
   overflow: hidden;
@@ -186,8 +196,8 @@ h1 {
 }
 
 .glow-on-hover {
-    width: 300px;
-    height: 50px;
+    width: 200px;
+    height: 40px;
     border: none;
     outline: none;
     color: black;
@@ -300,7 +310,7 @@ h1 {
 }
 
 .tutorial-header {
-  margin-top: 10px;
+  margin: 10px 0;
   text-align: center;
   font-size: 24px;
 }
@@ -311,6 +321,7 @@ h1 {
   height: 10%;
   align-items: center;
   font-size: 18px;
+  justify-content: center;
 }
 
 .left-click-image {
@@ -328,11 +339,37 @@ h1 {
   display: flex;
   align-items: center;
   font-size: 18px;
+  justify-content: center;
 }
 
 .right-click-image {
   width: 50px;
   height: 50px;
   margin-left: 30px;
-  margin-right: 39px;
+  margin-right: 45px;
+}
+
+.tutorial-content {
+  width: 400px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  text-align: justify;
+}
+
+.tutorial-content > h4 {
+  text-align: center;
+  margin: 5px 0;
+  line-height: 20px;
+}
+
+.win-or-lose {
+  border: #edcd22 2px solid;
+  font-size: 18px;
+  padding: 5px;
+}
+
+.win-or-lose > h3 {
+  text-align: center;
 }

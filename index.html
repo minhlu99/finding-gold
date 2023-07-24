@@ -9,12 +9,11 @@
 <body>
     <div class="input-container">
         <div class="input-group">
-            <div>
+            <div class="input-wrapper">
                 <label for="rows" class="inp">
                     <span class="label">Choose Input size (n x n):</span>
                     <span class="focus-bg"></span>
                 </label>
-                <br>
                 <select id="rows" type="number" class="select-input" onclick="changePlayBtn()">
                     <option value="6">6 x 6</option>
                     <option value="8">8 x 8</option>
@@ -51,9 +50,37 @@
                 <img src="./img/flag.svg" class="right-click-image">
                 <p>Right Mouse Click</p>
             </div>
-            <div></div>
-            <div></div>
-            <p></p>
+            <div class="tutorial-content">
+                <h4>Left Mouse Click</h4>
+                <p>
+                    If you click on a cell with gold, it will turn into a gold (indicating you found the gold)
+                    <br>
+                    If you click on a cell with a bomb, and the cell will turn into a bomb (indicating that you lost the game)
+                </p>
+                <h4>Right Mouse Click</h4>
+                <p>
+                    To help you keep track of potential bomb locations, you can right-click on a cell to mark it with a flag.<br>
+                    Right-clicking again on a flagged cell will remove the flag.<br>
+                    The flagged cells are for your reference only and do not affect the game mechanics.<br>
+                </p>
+                <p> <br>
+                    <h4>
+                        Welcome to the "Find Gold" game!
+                    </h4> In this game, you will navigate through a grid filled with hidden gold and bombs. Your goal is to find all the gold and avoid the bombs. Let's get started:
+                </p>
+                <h4>Step 1: Choose Grid Size</h4>
+                <h4>Step 2: Play the Game</h4>
+                <h4>Step 3: Find All the Gold</h4>
+                <div class="win-or-lose">
+                    <h3>Win or Lose</h3>
+                    <p>If you successfully reveal all the gold cells without clicking on any bombs, you win the game!
+                        <br>
+                        However, if you click on any bomb cell, the game is over, and you lose.</p>
+                        <br>
+                        <h3>Enjoy the game!</h3>
+                </div>
+
+            </div>
         </div>
     </div>
     </div>
