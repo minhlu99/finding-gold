@@ -9,6 +9,7 @@ body {
   flex-direction: row;
   height: 100%;
   width: 1400px;
+  /* background: linear-gradient(45deg, #fdfbe9, #f7ed91); */
 }
 
 h1 {
@@ -81,13 +82,12 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 920px;
     height: 100vh;
 }
 
 .input-container {
     margin-left: 50px;
-    margin-right: 50px;
 }
 
 .matrixTable-child {
@@ -371,4 +371,17 @@ h1 {
 
 .win-or-lose > h3 {
   text-align: center;
+}
+
+.timer-container {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  height: 50px;
+  width: 180px;
+  background-color: yellow;
+  font-size: 42px;
+  text-align: center;
+  border-radius: 20px;
+  
 }

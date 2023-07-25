@@ -88,7 +88,17 @@
     </div>
     <br>
     <div class="matrixTable-container">
+
+        <!-- Ma Trận Game -->
+
         <table id="matrixTable"></table>
+
+        <!-- Đồng hồ đếm giờ -->
+
+        <div class="timer-container">
+            <span id="timer">00:00:00</span>
+        </div>
+        
 
         <!-- pop up chiến thắng -->
         <div class="overlay" id="popup1">
@@ -98,7 +108,17 @@
               <button onclick="closeModal1()" class="glow-on-hover">Close</button>
             </div>
           </div>          
-    </div>
+        </div>
+
+        <!-- pop up thua cuộc -->
+        <div class="overlay" id="popup3">
+            <div class="popup">
+              <h2>You click on a Boom. You Lose!</h2>
+              <br>
+              <button onclick="closeModal3()" class="glow-on-hover">Close</button>
+            </div>
+          </div>          
+        </div>
 
         <!-- pop up nhập cột và hàng không hợp lệ -->
     <div class="overlay" id="popup2">
@@ -110,15 +130,6 @@
       </div>          
 </div>
 
-        <!-- pop up thua cuộc -->
-        <div class="overlay" id="popup3">
-            <div class="popup">
-              <h2>You Lose!!</h2>
-              <br>
-              <button onclick="closeModal3()" class="glow-on-hover">Close</button>
-            </div>
-          </div>          
-    </div>
 
 
     <script>
@@ -250,11 +261,11 @@
                     const isBoom = (event) => {
                             if (matrix[i][j] === 'red') {
                                 cell.className = 'turn-gold'
-                                checkWin();
+                                checkWin(timerInterval);
                             } else if (matrix[i][j] === 'white') {
                                 matrix[i][j] = 'turn-boom';
                                 cell.className = 'turn-boom';
-                                checkLose()
+                                checkLose(timerInterval)
                             } 
                         }
                     const isFlag = (event) => {
@@ -295,23 +306,50 @@
                     // đổi nội dung button khi click vào
                     const button = document.getElementById('play-btn');
                     button.textContent = "Reset?" ;
+
+                    //Reset timer
+                    const timerElement = document.getElementById('timer');
+                    timerElement.textContent = '00:00:00';
+
+                    // Start the timer
+                    let startTime = Date.now();
+                    let timerInterval = setInterval(updateTimer, 1000);
+
+                    function updateTimer() {
+                        let currentTime = Date.now();
+                        let timeDifference = currentTime - startTime;
+                        let seconds = Math.floor(timeDifference / 1000);
+                        let minutes = Math.floor(seconds / 60);
+                        let hours = Math.floor(minutes / 60);
+
+                        seconds = seconds % 60;
+                        seconds = seconds < 10 ? '0' + seconds : seconds;
+                        minutes = minutes < 10 ? '0' + minutes : minutes;
+                        hours = hours < 10 ? '0' + hours : hours;
+
+                        timerElement.textContent = hours + ':' + minutes + ':' + seconds;
+                    }
+
+
         }
 
         const matrixTable = document.getElementById('matrixTable');
 
-        function checkWin() {
+        function checkWin(timerInterval) {
             let cells = document.querySelectorAll('.red');
             if (cells.length === 0) {
                 const modal = document.getElementById('popup1');
                 modal.style.display = 'block';
+                clearInterval(timerInterval);
             }
         }
 
-        function checkLose() {
+        function checkLose(timerInterval) {
             let cells = document.querySelectorAll('.turn-boom');
             if (cells.length === 1) {
                 const modal = document.getElementById('popup3');
                 modal.style.display = 'block';
+                clearInterval(timerInterval);
             }
         }
 
