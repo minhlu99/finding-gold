@@ -9,7 +9,7 @@ body {
   flex-direction: row;
   height: 100%;
   width: 1400px;
-  /* background: linear-gradient(45deg, #fdfbe9, #f7ed91); */
+  /* background: linear-gradient(45deg, #fdfbe9, #fcf9cb); */
 }
 
 h1 {
@@ -181,7 +181,7 @@ h1 {
 .select-input {
   margin: 10px 0;
   font-size: 24px;
-  width: 200px;
+  width: 300px;
   text-align: center;
   height: 40px;
   border-radius: 4px;
@@ -197,7 +197,7 @@ h1 {
 }
 
 .glow-on-hover {
-    width: 200px;
+    width: 300px;
     height: 40px;
     border: none;
     outline: none;
@@ -208,7 +208,19 @@ h1 {
     z-index: 0;
     border-radius: 10px;
     font-size: 24px;
-    font-family:'Courier New', Courier, monospace
+    font-family:'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#play-btn-icon {
+  display: flex;
+  align-items: center;
+}
+
+.reset-icon {
+  background-image: url('./img/refresh.png');
 }
 
 .glow-on-hover:before {
