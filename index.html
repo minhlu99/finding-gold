@@ -103,7 +103,7 @@
         <!-- pop up chiến thắng -->
         <div class="overlay" id="popup1">
             <div class="popup">
-              <h2>Congratulations, You Win!</h2>
+              <h2 id="win-header">Congratulations, You Win!</h2>
               <br>
               <button onclick="closeModal1()" class="glow-on-hover">Close</button>
             </div>
@@ -134,12 +134,20 @@
 
     <script>
 
+        let timerInterval;  
+
         function changePlayBtn() {
                     const button = document.getElementById('play-btn');
                     button.textContent = "Play!" ;
+                    clearInterval(timerInterval);
         }
 
         function generateMatrix() {
+
+            clearInterval(timerInterval); // Clear any existing timer interval
+            timerInterval = null;
+
+            
             const rowsInput = document.getElementById("rows");
             const colsInput = document.getElementById("cols");
 
@@ -260,11 +268,11 @@
                 for (let j = 0; j < cols; j++) {
                     const isBoom = (event) => {
                             if (matrix[i][j] === 'red') {
-                                cell.className = 'turn-gold'
+                                cell.classList.add('turn-gold')
                                 checkWin(timerInterval);
                             } else if (matrix[i][j] === 'white') {
                                 matrix[i][j] = 'turn-boom';
-                                cell.className = 'turn-boom';
+                                cell.classList.add('turn-boom');
                                 checkLose(timerInterval)
                             } 
                         }
@@ -313,7 +321,8 @@
 
                     // Start the timer
                     let startTime = Date.now();
-                    let timerInterval = setInterval(updateTimer, 1000);
+                    timerInterval = setInterval(updateTimer, 1000);
+
 
                     function updateTimer() {
                         let currentTime = Date.now();
@@ -330,6 +339,7 @@
 
                         timerElement.textContent = hours + ':' + minutes + ':' + seconds;
                     }
+
 
 
         }
