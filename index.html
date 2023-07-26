@@ -137,6 +137,7 @@
 
         let timerInterval;
         let winTime;
+        let gameOver =false;
 
         function changePlayBtn() {
                     const button = document.getElementById('play-btn');
@@ -146,7 +147,7 @@
 
         function generateMatrix() {
 
-            let gameOver = false;
+            gameOver =false
 
             clearInterval(timerInterval); // Clear any existing timer interval
             timerInterval = null;
