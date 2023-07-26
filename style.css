@@ -400,3 +400,17 @@ h1 {
   border-radius: 20px;
 
 }
+
+.time-taken {
+  font-size: 28px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+#win-header {
+  font-size: 36px;
+}
+
+.close-btn {
+  width: 100%;
+}

@@ -104,8 +104,9 @@
         <div class="overlay" id="popup1">
             <div class="popup">
               <h2 id="win-header">Congratulations, You Win!</h2>
+              <p class="time-taken">Time Taken: <span id="win-time"></span></p>
               <br>
-              <button onclick="closeModal1()" class="glow-on-hover">Close</button>
+              <button onclick="closeModal1()" class="glow-on-hover close-btn">Close</button>
             </div>
           </div>          
         </div>
@@ -135,6 +136,7 @@
     <script>
 
         let timerInterval;
+        let winTime;
 
         function changePlayBtn() {
                     const button = document.getElementById('play-btn');
@@ -143,6 +145,8 @@
         }
 
         function generateMatrix() {
+
+            let gameOver = false;
 
             clearInterval(timerInterval); // Clear any existing timer interval
             timerInterval = null;
@@ -267,12 +271,14 @@
                 // Các ô ma trận
                 for (let j = 0; j < cols; j++) {
                     const isBoom = (event) => {
+                            if (gameOver) {return;} //disable click when game win or lose
                             if (cell.classList.contains('flag')) {return;}
                             if (matrix[i][j] === 'red') {
                                 cell.classList.remove('red')
                                 cell.classList.add('turn-gold')
                             } else if (matrix[i][j] === 'white') {
                                 matrix[i][j] = 'turn-boom';
+                                cell.classList.remove('white')
                                 cell.classList.add('turn-boom');
                             }
                             checkWin(timerInterval)
@@ -280,6 +286,7 @@
                     const isFlag = (event) => {
                         if (event.type === 'contextmenu') {
                             event.preventDefault();
+                            if (gameOver) {return;} //disable click when game win or lose
                             const cell = event.target
                             if (!cell.classList.contains('flag')) {
                                 cell.classList.add('flag');
@@ -339,9 +346,8 @@
                         hours = hours < 10 ? '0' + hours : hours;
 
                         timerElement.textContent = hours + ':' + minutes + ':' + seconds;
+
                     }
-
-
 
         }
 
@@ -352,14 +358,18 @@
             let cells2 = document.querySelectorAll('.turn-boom')
             
             if (cells1.length === 0 && cells2.length === 0) {
+                winTime = document.getElementById('timer').textContent;
+                document.getElementById('win-time').textContent = winTime
                 const modal = document.getElementById('popup1');
                 modal.style.display = 'block';
                 clearInterval(timerInterval);
+                gameOver = true
             }
             else if (cells2.length === 1) {
                 const modal = document.getElementById('popup3');
                 modal.style.display = 'block';
                 clearInterval(timerInterval);
+                gameOver = true
             }
         }
 
@@ -375,6 +385,7 @@
         function closeModal1() {
             const modal = document.getElementById('popup1');
             modal.style.display = 'none';
+            winTime = null;
         }
 
         function closeModal2() {
