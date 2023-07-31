@@ -414,3 +414,10 @@ h1 {
 .close-btn {
   width: 100%;
 }
+
+.lose-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
