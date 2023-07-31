@@ -357,6 +357,44 @@
 
                     }
 
+                    //Add highlight row and col when hover to any cell
+
+                    function highlightRowAndCol(rowIdx, colIdx) {
+                    const cells = document.querySelectorAll('.modify-cell-size');
+
+                    for (let i = 0; i < cells.length; i++) {
+                        const cell = cells[i];
+                        const rowIndex = cell.parentElement.rowIndex;
+                        const colIndex = cell.cellIndex;
+
+                        if (rowIndex === rowIdx || colIndex === colIdx) {
+                        cell.classList.add('highlight');
+                        } else {
+                        cell.classList.remove('highlight');
+                        }
+                    }
+                    }
+
+                    function clearHighlight() {
+                    const cells = document.querySelectorAll('.modify-cell-size');
+                    for (let i = 0; i < cells.length; i++) {
+                        cells[i].classList.remove('highlight');
+                    }
+                    }
+
+                    function setupCellHoverEvents() {
+                    const cells = document.querySelectorAll('.modify-cell-size');
+                    cells.forEach((cell) => {
+                        cell.addEventListener('mouseenter', () => {
+                        const rowIndex = cell.parentElement.rowIndex;
+                        const colIndex = cell.cellIndex;
+                        highlightRowAndCol(rowIndex, colIndex);
+                        });
+
+                        cell.addEventListener('mouseleave', clearHighlight);
+                    });
+                    }
+                    setupCellHoverEvents();
         }
 
         const matrixTable = document.getElementById('matrixTable');
