@@ -40,6 +40,8 @@
             <button id="play-btn" onclick="generateMatrix()" class="glow-on-hover">
                 Play!</button>
         </div>
+
+        <!-- tutorial -->
         <div class="tutorial-container">
             <h3 class="tutorial-header">Tutorial</h3>
             <div class="left-click">
@@ -89,18 +91,18 @@
     <br>
     <div class="matrixTable-container">
 
-        <!-- Ma Trận Game -->
+        <!-- Matrix Game -->
 
         <table id="matrixTable"></table>
 
-        <!-- Đồng hồ đếm giờ -->
+        <!--Timer-->
 
             <div class="timer-container">
                 <span id="timer">00:00:00</span>
             </div>
         
 
-        <!-- pop up chiến thắng -->
+        <!-- Win Modal -->
         <div class="overlay" id="popup1">
             <div class="popup">
               <h2 id="win-header">Congratulations, You Win!</h2>
@@ -111,17 +113,17 @@
           </div>          
         </div>
 
-        <!-- pop up thua cuộc -->
+        <!-- Lose Modal -->
         <div class="overlay" id="popup3">
             <div class="popup">
-              <h2>You click on a Boom. You Lose!</h2>
+              <h2>Oops! ... You clicked on a bomb!</h2>
               <br>
               <button onclick="closeModal3()" class="glow-on-hover">Close</button>
             </div>
           </div>          
         </div>
 
-        <!-- pop up nhập cột và hàng không hợp lệ -->
+        <!-- Input Invalid Modal -->
     <div class="overlay" id="popup2">
         <div class="popup">
           <h2>Invalid Input!</h2>
@@ -145,6 +147,8 @@
                     clearInterval(timerInterval);
         }
 
+
+        // When click Play or Reset button
         function generateMatrix() {
 
             gameOver =false
@@ -197,11 +201,11 @@
                     }
                     else if (rowCounter > 0) {
                         rowCounters[i].push(rowCounter);
-                        rowCounter = 0; // Reset đếm hàng
+                        rowCounter = 0; // Reset rowCounter
                     }
                 }
                 if (rowCounter > 0) {
-                    rowCounters[i].push(rowCounter); // Lưu giá trị đếm hàng cuối cùng
+                    rowCounters[i].push(rowCounter); // Save final rows value
                 }
             }
 
@@ -227,10 +231,10 @@
             let table = document.createElement('table')
             table.className = "matrixTable-child"
 
-            // Header hàng
+            // Header of Row that includes numbers of Gold
             let headerRow = document.createElement('tr')
 
-            headerRow.appendChild(document.createElement('td')) // Ô trống đầu tiên
+            headerRow.appendChild(document.createElement('td')) 
             for (let j = 0; j < cols; j++) {
                 let headerCell = document.createElement('td');
                 headerCell.className = "counterWrapper"
@@ -272,7 +276,7 @@
                 // Các ô ma trận
                 for (let j = 0; j < cols; j++) {
                     const isBoom = (event) => {
-                            if (gameOver) {return;} //disable click when game win or lose
+                            if (gameOver) {return;} //disable click when game over
                             if (cell.classList.contains('flag')) {return;}
                             if (matrix[i][j] === 'red') {
                                 cell.classList.remove('red')
@@ -287,7 +291,7 @@
                     const isFlag = (event) => {
                         if (event.type === 'contextmenu') {
                             event.preventDefault();
-                            if (gameOver) {return;} //disable click when game win or lose
+                            if (gameOver) {return;} //disable click when game over
                             const cell = event.target
                             if (!cell.classList.contains('flag')) {
                                 cell.classList.add('flag');
@@ -300,7 +304,7 @@
                     cell.className = matrix[i][j];
                     cell.classList.add('cell-size')
 
-                    // tạo responsive cho cell và font khi kích thước bảng quá lớn
+                    // responsive for cell and font when the matrix is too large
                     if (isLargeSize) {
                         cell.classList.remove('cell-size')
                         cell.classList.add('modify-cell-size')
@@ -320,7 +324,7 @@
             
             matrixTable.appendChild(table);
 
-                    // đổi nội dung button khi click vào
+                    // change to Reset button
                     const button = document.getElementById('play-btn');
                     button.textContent = "Reset?" ;
 
@@ -354,6 +358,8 @@
 
         const matrixTable = document.getElementById('matrixTable');
 
+
+        // Check Win or Lose
         function checkWin(timerInterval) {
             let cells1 = document.querySelectorAll('.red');
             let cells2 = document.querySelectorAll('.turn-boom')
@@ -383,6 +389,8 @@
         //     }
         // }
 
+
+        // Close Button
         function closeModal1() {
             const modal = document.getElementById('popup1');
             modal.style.display = 'none';
