@@ -235,6 +235,7 @@
 
             // Header of Row that includes numbers of Gold
             let headerRow = document.createElement('tr')
+            headerRow.className = "headerRow"
 
             headerRow.appendChild(document.createElement('td')) 
             for (let j = 0; j < cols; j++) {
@@ -242,7 +243,7 @@
                 headerCell.className = "counterWrapper"
                 let colCounts = colCounters[j];
                 for (let k = 0; k < colCounts.length; k++) {
-                    let countCell = document.createElement('div');
+                    let countCell = document.createElement('td');
                     countCell.textContent = colCounts[k];
                     countCell.className = 'counter';
                     if (isLargeSize) {
