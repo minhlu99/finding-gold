@@ -261,6 +261,7 @@
                 
                 // Ô đếm hàng
                 let countCell = document.createElement("td");
+                countCell.className = 'countersWrapper'
                 let rowCounts = rowCounters[i];
                 let counterWrapper = document.createElement('div');
                 counterWrapper.className = 'counters';
@@ -360,17 +361,15 @@
                     //Add highlight row and col when hover to any cell
 
                     function highlightRowAndCol(rowIdx, colIdx) {
-                    const cells = document.querySelectorAll('.modify-cell-size');
+                    const rows = document.querySelectorAll('.matrixTable-child tr');
+                    const cols = document.querySelectorAll('.counterWrapper');
 
-                    for (let i = 0; i < cells.length; i++) {
-                        const cell = cells[i];
-                        const rowIndex = cell.parentElement.rowIndex;
-                        const colIndex = cell.cellIndex;
-
-                        if (rowIndex === rowIdx || colIndex === colIdx) {
-                        cell.classList.add('highlight');
+                    for (let i = 0; i < rows.length; i++) {
+                        const row = rows[i + 1]
+                        if (i + 1 === rowIdx) {
+                            row.className = `highlight h-cols-${colIdx + 1}`
                         } else {
-                        cell.classList.remove('highlight');
+                            row.className = `h-cols-${colIdx + 1}`
                         }
                     }
                     }
@@ -391,7 +390,7 @@
                         highlightRowAndCol(rowIndex, colIndex);
                         });
 
-                        cell.addEventListener('mouseleave', clearHighlight);
+                        cell.removeEventListener('mouseleave', clearHighlight);
                     });
                     }
                     setupCellHoverEvents();
